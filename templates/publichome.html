@@ -1,0 +1,30 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+
+<div class="row">
+	<div class="col-md-2">
+	</div>
+	<div class="col-md-8 main-body">
+		<div class="col-md-3 verticalLine">
+			<h1>Categories</h1>
+			{% for category in categories %}
+			<p><h3><a href="{{url_for('items_in_category', category=category.name)}}" id="orange">{{ category.name }}</a></h3></p>
+			{% endfor %}
+			<br>
+		</div>
+
+		<div class="col-md-8">
+			<h1>Latest Items</h1>
+			{% for item in latest_items %}	
+			<p><h3><a href=" {{url_for('item_description', category=categories_dict[item.category_id], item=item.name)}}" id="orange">{{ item.name }} <i id="category_of_item">({{ categories_dict[item.category_id] }})</i></a></h3></p>
+			{% endfor %}
+		</div>
+	<div class="col-md-2">
+	</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

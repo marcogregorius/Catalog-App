@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div class="row">
+	<div class="col-md-2">
+	</div>
+	<div class="col-md-8 main-body">
+	<form action="#" method="post">
+		<p><label for="name">Name:</label>
+		<input type="text" name="name" required></p>
+
+		<p><label for="description">Description:</label>
+		<input type="text" name="description"></p>
+
+		<b>Category:</b>
+		<select name="category" required>
+		{% for i in categories %}
+	  	<option selected="{{category}}">{{i.name}}</option>
+	  	{% endfor %}
+		</select>
+		<br>
+		<br>
+		<p><button type="submit" class="btn btn-default" id="submit" type="submit">Create</button></p>
+	</form>
+	</div>
+	<div class="col-md-2">
+	</div>
+</div>
+
+{% endblock %}
+

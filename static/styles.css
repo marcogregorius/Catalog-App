@@ -1,0 +1,109 @@
+*{
+	font-family:"Helvetica Neue", sans-serif;
+}
+
+body{
+	background-color:rgb(242, 242, 242);
+}
+
+form{
+	padding-top:20px;
+}
+
+#logged-in-as{
+	color:white;
+	font-size:14px;
+}
+
+#selectedItems{
+	color:#000099;
+}
+
+#orange{
+	color:#ff6600;
+}
+
+#category_of_item{
+	color:grey;
+}
+
+#submit{
+	background-color:#3399ff;
+	color:white;
+}
+
+#cancel{
+	background-color:red;
+	color:white;
+}
+
+.title{
+	color: white;
+	font-size: 60px;
+}
+
+.top-menu{
+	background-color: rgb(0, 0, 77);
+}
+
+.verticalLine{
+	border-right: 1px solid #d1d1e0;
+	margin: 20px;
+}
+
+.main-body{
+	background-color:white;
+	margin-top:30px;
+	outline-style: solid;
+	outline-color: gray;
+	outline-width: thin;
+	margin-bottom:30px;
+	padding-bottom:30px;
+}
+
+.login-button{
+	background-color:#ff6600;
+	color: white;
+	font-size: 24px;
+	padding: 5px 15px;
+	width:150px;
+	display:inline-block;
+	text-align:center;
+}
+
+.login-button: hover{
+	background-color:#ff3300;
+}
+
+.register-button{
+	background-color:#3399ff;
+	color: white;
+	font-size: 24px;
+	padding: 5px 15px;
+	width:150px;
+	display:inline-block;
+	text-align:center;
+}
+
+.register-button: hover{
+	background-color:#0066ff;
+}
+
+.description{
+	font-size:24px;
+}
+
+.myitems{
+	font-size:20px;
+}
+
+.form-signin {
+  width: 300px;
+  height: 35px;
+  margin: 0 auto;
+  border: 1px solid rgba(0,0,0,0.1);  
+ }
+
+ .text-left{
+ 	text-align:left;
+ }

@@ -1,0 +1,20 @@
+<div class="row top-menu">
+	<div class="col-md-2">
+	</div>
+	<div class="col-md-4">
+		<h1><a href="{{url_for('home')}}" class="title">Catalog App</a></h1>
+	</div>
+	<div class="col-md-4 text-right">
+			{% if 'username' not in session %}
+			<h4><a href="{{url_for('register')}}" class="register-button">Register</a></h4>
+			<h4><a href="{{url_for('showLogin')}}" class="login-button">Login</a></h4>
+			{% else %}
+			<h3><a href="{{url_for('myitems', username=username)}}" class="myitems">My Items</a></h3>
+			<p id="logged-in-as">Logged in as {{session['username']}}</p>
+			<h4><a href="{{url_for('disconnect')}}" class="login-button">Logout</a></h4>
+			{% endif %}
+		
+	</div>
+	<div class="col-md-2">
+	</div>
+</div>
