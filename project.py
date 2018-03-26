@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+from flask import Flask, render_template, request, redirect, jsonify
+from flask import url_for, flash
 from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Category, Item
@@ -34,7 +35,8 @@ APPLICATION_NAME = "Catalog App"
 @app.route('/login', methods=['GET', 'POST'])
 def showLogin():
     """
-    Login page - User can choose between manually logging in with the registered username & password or with Google Sign-in
+    Login page - User can choose between manually logging in with the
+    registered username & password or with Google Sign-in
     """
     if request.method == 'POST':
         # When pressing submit button, do the following.
@@ -43,18 +45,20 @@ def showLogin():
             password = request.form['password']
 
             # Check if the username exists
-            username_exists = session.query(User).filter_by(username=username).first()
+            users = session.query(User)
+            username_exists = users.filter_by(username=username).first()
             if not username_exists:
                 return render_template('login_username_does_not_exist.html')
 
-            # Check if password is correct. If correct, redirected to home with storing the necessary login_session informations.
+            # Check if password is correct.
+            # If correct, redirected to home with storing
+            # the necessary login_session informations.
             if check_password(username, password):
                 login_session['username'] = username
-                email = session.query(User).filter_by(username=username).one().email
-                user_id = session.query(User).filter_by(username=username).one().id
-                login_session['email'] = email
+                user = session.query(User).filter_by(username=username).one()
+                login_session['email'] = user.email
                 login_session['provider'] = 'manual'
-                login_session['user_id'] = user_id
+                login_session['user_id'] = user.id
                 login_session['picture'] = 'NA'
                 return redirect(url_for('home'))
             else:
@@ -75,13 +79,15 @@ def showLogin():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """
-    Registration page - User can register by inputting username, password, email and real name.
+    Registration page - User can register by
+    inputting username, password, email and real name.
     """
     if request.method == 'POST':
         if request.form['submit'] == 'submit':
             username = request.form['username']
             email = request.form['email']
-            username_exists = session.query(User).filter_by(username=username).first()
+            users = session.query(User)
+            username_exists = users.filter_by(username=username).first()
             email_exists = session.query(User).filter_by(email=email).first()
             if username_exists:
                 return render_template('register_user_already_exists.html')
@@ -91,7 +97,8 @@ def register():
             email = request.form['email']
             password = request.form['password']
             hashed_password, salt = hash_password(password)
-            new_user = User(username=username, name=name, email=email, salt=salt, hashed_password=hashed_password)
+            new_user = User(username=username, name=name, email=email,
+                            salt=salt, hashed_password=hashed_password)
             session.add(new_user)
             session.commit()
             user_id = session.query(User).filter_by(username=username).one().id
@@ -159,8 +166,8 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(json.dumps('Current user is '
+                                            'already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -193,7 +200,8 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;'
+    output += '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     print "done!"
     return output
 
@@ -215,7 +223,8 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps('Failed to revoke token for'
+                                            ' given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -238,8 +247,10 @@ def disconnect():
 
 
 def createUser(login_session):
-    newUser = User(username=login_session['email'], name=login_session['username'], email=login_session[
-                   'email'], picture=login_session['picture'])
+    newUser = User(username=login_session['email'],
+                   name=login_session['username'],
+                   email=login_session['email'],
+                   picture=login_session['picture'])
     session.add(newUser)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
@@ -270,11 +281,14 @@ def hash_password(password):
 def check_password(username, password):
     """
     Check current username's password from the hashed password in the database
-    This function will hash the password first before matching to the one in the database
+    This function will hash the password first before matching
+    to the one in the database
     """
     user = session.query(User).filter_by(username=username).one()
-    hashed_password = hashlib.sha256(user.salt.encode() + password.encode()).hexdigest()
-    return hashed_password == user.hashed_password
+    hashed_password = hashlib.sha256(user.salt.encode() + password.encode())
+    hashed_password_digested = hashed_password.hexdigest()
+    return hashed_password_digested == user.hashed_password
+
 
 def login_required(function):
     @wraps(function)
@@ -316,9 +330,15 @@ def home():
     for category in categories:
         categories_dict[category.id] = category.name
     if 'username' not in login_session:
-        return render_template('publichome.html', categories=categories, latest_items=latest_items, categories_dict=categories_dict)
+        return render_template('publichome.html',
+                               categories=categories,
+                               latest_items=latest_items,
+                               categories_dict=categories_dict)
     else:
-        return render_template('home.html', categories=categories, latest_items=latest_items, categories_dict=categories_dict,
+        return render_template('home.html',
+                               categories=categories,
+                               latest_items=latest_items,
+                               categories_dict=categories_dict,
                                username=login_session['username'])
 
 
@@ -328,44 +348,65 @@ def myitems(username):
     When user is logged in, the user's added items are shown.
     """
     categories = session.query(Category).order_by(Category.name).all()
-    user_id = session.query(User).filter_by(email=login_session['email']).one().id
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    user_id = user.id
     my_items = session.query(Item).filter_by(user_id=user_id).all()
     categories_dict = {}
     for category in categories:
         categories_dict[category.id] = category.name
-    return render_template('myitems.html', categories=categories, my_items=my_items, categories_dict=categories_dict, username=username)
+    return render_template('myitems.html',
+                           categories=categories,
+                           my_items=my_items,
+                           categories_dict=categories_dict,
+                           username=username)
 
 
 @app.route('/catalog/<category>/items')
 def items_in_category(category):
     """
-    When a category is clicked, the items in the respective category are listed.
+    When a category is clicked, the items in the category are listed.
     If user is not logged in, adding of new item is not available.
     """
     category_id = session.query(Category).filter_by(name=category).one().id
     categories = session.query(Category).order_by(Category.name).all()
     items = session.query(Item).filter_by(category_id=category_id).all()
-    num_of_items = session.query(Item).filter_by(category_id=category_id).count()
+    item_count = session.query(Item).filter_by(category_id=category_id).count()
     if 'username' not in login_session:
-        return render_template('publicitems.html', categories=categories, items=items, current_category=category, num_of_items=num_of_items)
+        return render_template('publicitems.html',
+                               categories=categories,
+                               items=items,
+                               current_category=category,
+                               num_of_items=item_count)
     else:
-        return render_template('items.html', categories=categories, items=items, current_category=category, num_of_items=num_of_items,
+        return render_template('items.html',
+                               categories=categories,
+                               items=items,
+                               current_category=category,
+                               num_of_items=item_count,
                                username=login_session['username'])
 
 
 @app.route('/catalog/<category>/<item>')
 def item_description(category, item):
     """
-    When clicking on an item, it displays the description of the item while having the option to edit/delete it.
+    When clicking on an item, it displays the description of the item
+    while having the option to edit/delete it.
     If user is not logged in, editing and deleting is not available.
     """
     category_id = session.query(Category).filter_by(name=category).one().id
-    item = session.query(Item).filter_by(category_id=category_id, name=item).one()
+    item = session.query(Item).filter_by(category_id=category_id,
+                                         name=item).one()
     creator_name = session.query(User).filter_by(id=item.user_id).one().name
     if 'username' not in login_session:
-        return render_template('publicdescription.html', item=item, category=category, creator_name=creator_name)
+        return render_template('publicdescription.html',
+                               item=item,
+                               category=category,
+                               creator_name=creator_name)
     else:
-        return render_template('description.html', item=item, category=category, creator_name=creator_name)
+        return render_template('description.html',
+                               item=item,
+                               category=category,
+                               creator_name=creator_name)
 
 
 @app.route('/catalog/new', methods=['GET', 'POST'])
@@ -377,9 +418,13 @@ def new_item():
     categories = session.query(Category).order_by(Category.name).all()
     if request.method == 'POST':
         creation_time = datetime.datetime.now()
-        category_id = session.query(Category).filter_by(name=request.form['category']).one().id
-        new_item = Item(name=request.form['name'], description=request.form['description'],
-                        user_id=login_session['user_id'], category_id=category_id, added_time=creation_time)
+        category = session.query(Category)
+        cat_id = category.filter_by(name=request.form['category']).one().id
+        new_item = Item(name=request.form['name'],
+                        description=request.form['description'],
+                        user_id=login_session['user_id'],
+                        category_id=cat_id,
+                        added_time=creation_time)
         session.add(new_item)
         session.commit()
         return redirect(url_for('home'))
@@ -390,16 +435,25 @@ def new_item():
 @app.route('/catalog/<category>/<item>/edit', methods=['GET', 'POST'])
 def edit_item(category, item):
     """
-    Page is only available to authorized user, ie the author of the item (who added the item).
-    Authorized user is able to edit the name, description and category of the item.
+    Page is only available to authorized user, ie the author of the item
+    (who added the item). Authorized user is able to edit the name,
+    description and category of the item.
     """
     if 'username' not in login_session:
         return redirect('/login')
     category_id = session.query(Category).filter_by(name=category).one().id
-    item = session.query(Item).filter_by(category_id=category_id, name=item).one()
+    items = session.query(Item)
+    item = items.filter_by(category_id=category_id, name=item).one()
     if login_session['user_id'] != item.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to edit this item. Please create your own item in order to edit.');}</script><body onload='myFunction()'>"
-        return render_template('edititem.html', category=category, item=item, categories=categories, default_category=default_category)
+        return "<script>function myFunction()" + \
+               " {alert('You are not authorized to edit this item." + \
+               " Please create your own item in order to edit.');}</script>" +\
+               "<body onload='myFunction()'>"
+        return render_template('edititem.html',
+                               category=category,
+                               item=item,
+                               categories=categories,
+                               default_category=default_category)
     categories = session.query(Category).order_by(Category.name).all()
     default_category = category
     if request.method == 'POST':
@@ -408,25 +462,33 @@ def edit_item(category, item):
         if request.form['description']:
             item.description = request.form['description']
         if request.form['category']:
-            edited_category_id = session.query(Category).filter_by(name=request.form['category']).one().id
+            cat = session.query(Category)
+            edited_cat = cat.filter_by(name=request.form['category']).one()
+            edited_category_id = edited_cat.id
             item.category_id = edited_category_id
         session.commit()
         return redirect(url_for('items_in_category', category=category))
     else:
-        return render_template('edititem.html', category=category, item=item, categories=categories, default_category=default_category)
+        return render_template('edititem.html',
+                               category=category,
+                               item=item,
+                               categories=categories,
+                               default_category=default_category)
 
 
 @app.route('/catalog/<category>/<item>/delete', methods=['GET', 'POST'])
 def delete_item(category, item):
     """
-    Page is only available to authorized user, ie the author of the item who added the item.
-    Authorized user is able to delete the item.
+    Page is only available to authorized user, ie the author of the item who
+    added the item. Authorized user is able to delete the item.
     """
     if 'username' not in login_session:
         return redirect('/login')
     item = session.query(Item).filter_by(name=item).one()
     if login_session['user_id'] != item.user_id:
-        return "<script>function myFunction() {alert('You are not authorized to delete this item.');}</script><body onload='myFunction()'>"
+        return "<script>function myFunction()" + \
+               " {alert('You are not authorized to delete this item.');}" + \
+               "</script><body onload='myFunction()'>"
     category_id = session.query(Category).filter_by(name=category).one().id
     if request.method == 'POST':
         session.delete(item)

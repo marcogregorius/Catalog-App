@@ -42,6 +42,11 @@ form{
 	font-size: 60px;
 }
 
+a.title:hover{
+	text-decoration:none;
+	color:white;
+}
+
 .top-menu{
 	background-color: rgb(0, 0, 77);
 }
@@ -71,8 +76,10 @@ form{
 	text-align:center;
 }
 
-.login-button: hover{
-	background-color:#ff3300;
+a.login-button:hover{
+	opacity:0.6;
+	color:black;
+	text-decoration:none;
 }
 
 .register-button{
@@ -85,8 +92,10 @@ form{
 	text-align:center;
 }
 
-.register-button: hover{
+a.register-button:hover{
 	background-color:#0066ff;
+	color:black;
+	text-decoration:none;
 }
 
 .description{
