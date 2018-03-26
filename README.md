@@ -22,13 +22,13 @@ The website in its simplest form displays the basic CRUD functionality.
 ### Launch the website from your browser (Google Chrome is preferred):
 - Go to http://localhost:8000
 - Start with registering your account or logging in via Google Sign In
-   Registration page:
-   ![alt text](Catalog-App/screenshots/register.png "Registration page")
-   Login page:
-   ![alt text](Catalog-App/screenshots/login.png "Login page")
+   - Registration page:
+   ![alt text](/screenshots/register.png "Registration page")
+   - Login page:
+   ![alt text](/screenshots/login.png "Login page")
 - After logged in, you will have the access to add new item as below.
-   Home page (logged in user):
-   ![alt text](Catalog-App/screenshots/home.png "Home page")
+   - Home page (logged in user):
+   ![alt text](/screenshots/home.png "Home page")
 - From here, you can navigate through your added items in "My Item" on the top right corner, as well as edit and delete your own item.
 - Note that you are not authorized to edit or delete items that do not belong to you (not added by you).
 
