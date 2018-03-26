@@ -1,5 +1,5 @@
 # Catalog App
-Catalog App is a web app that lists a catalog of sports categories and items in every category. The website is featured with authentication to authenticate real user and authorization to authorize the correct user when modifying the item. User has the option to login with traditionally entering username and password or via Google Sign In.
+Catalog App is a web app that lists a catalog of sports categories and items in every category. The website is featured with authentication to authenticate real user and authorization to authorize the correct user when modifying the item. User has the option to login with traditionally entering username and password or via Google Sign In. The traditional sign in uses the feature of hashing (SHA256) a unique salt with the password and stores the hashed password in the database.
 The website in its simplest form displays the basic CRUD functionality.
 
 ## Technology Used
@@ -24,7 +24,7 @@ The website in its simplest form displays the basic CRUD functionality.
 - Start with registering your account or logging in via Google Sign In
    - Registration page:
    ![alt text](/screenshots/register.png "Registration page")
-   - Login page:
+   - Login page - User has the option for signing in using locally created account from the registration page or via Google Sign In:
    ![alt text](/screenshots/login.png "Login page")
 - After logged in, you will have the access to add new item as below.
    - Home page (logged in user):
