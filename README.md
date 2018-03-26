@@ -1,13 +1,25 @@
-# Fresh Tomatoes
-Fresh tomatoes is a website to display movies with their trailers. The back end of this website is written in Python for constructing the movie list.
+# Catalog App
+Catalog App is a web app that lists a catalog of sports categories and items in every category. The website is featured with authentication to authenticate real user and authorization to authorize the correct user when modifying the item. User has the option to login with traditionally entering username and password or via Google Sign In.
+The website in its simplest form displays the basic CRUD functionality.
+
+## Technology Used
+- Backend: Python with Flask framework and SQL Alchemy
+- Frontend: HTML5 and CSS with Bootstrap Framework
 
 ## Download
-- Fork this Github [repository](https://github.com/marcogregorius/ud036_StarterCode)
+- Fork this Github [repository](https://github.com/marcogregorius/Catalog-App)
 - Clone to your local repository by pasting below line into your command line:
-  `git clone https://github.com/marcogregorius/ud036_StarterCode.git`
+  `https://github.com/marcogregorius/Catalog-App.git`
 
 ## Usage Instruction
-### To insert new movies:
-- In `entertainment_center.py`, you can insert new movies by creating new instance of object `Movie` and adding that instance to the `movies` list.
-- To update the website, simply run the `fresh_tomatoes.py` on your code editor.
-- The script will automatically open the `fresh_tomatoes.html` website in your browser.
+### Connect to Udacity VM to run the server:
+- `cd` to the `/catalog/` folder
+- Run `vagrant up`
+- Enter `vagrant ssh`
+- In the vagrant environment, `cd` to the `/catalog/` folder.
+- Run the server python file with `python project.py`
+
+### Launch the website from your browser (Google Chrome is preferred):
+- Go to http://localhost:8000
+- Start with registering your account or logging in via Google Sign In
+- Add items, modify and delete to your liking.

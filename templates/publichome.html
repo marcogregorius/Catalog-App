@@ -7,6 +7,19 @@
 	<div class="col-md-2">
 	</div>
 	<div class="col-md-8 main-body">
+		<div class = 'flash'>
+		{% with messages = get_flashed_messages() %}
+      	{% if messages %}
+          
+        <ul>
+        {% for message in messages %}
+        <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    	{% endwith %}
+		</div>
+
 		<div class="col-md-3 verticalLine">
 			<h1>Categories</h1>
 			{% for category in categories %}

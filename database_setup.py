@@ -8,6 +8,9 @@ Base = declarative_base()
 
 
 class User(Base):
+    """
+    Create a User table.
+    """
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -20,6 +23,9 @@ class User(Base):
 
 
 class Category(Base):
+    """
+    Create a Category table.
+    """
     __tablename__ = 'category'
 
     id = Column(Integer, primary_key=True)
@@ -29,12 +35,15 @@ class Category(Base):
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
-            'name': self.name,
             'id': self.id,
+            'name': self.name,
         }
 
 
 class Item(Base):
+    """
+    Create an Item table.
+    """
     __tablename__ = 'item'
 
     name = Column(String(250), nullable=False)
@@ -50,10 +59,10 @@ class Item(Base):
     def serialize(self):
         """Return object data in easily serializeable format"""
         return {
-            'name': self.name,
+            'category_id': self.category_id,
             'description': self.description,
             'id': self.id,
-            'category_id': self.category_id,
+            'name': self.name,
         }
 
 

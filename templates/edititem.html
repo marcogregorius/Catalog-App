@@ -16,8 +16,9 @@
 	<p><strong>Category</strong></p>
 	<select name="category" required>
 	{% for category in categories %}
-  	<option {% if category.name == default_category %} value="{{category.name}}" selected>{{category.name}}</option> {% endif %}
-  	<option {% if category.name != default_category %} value="{{category.name}}">{{category.name}}</option> {% endif %}
+	<option value = ""{% if category.name == default_category %} selected {% endif %}>{{category.name}}</option>
+<!--   	<option {% if category.name == default_category %} value="{{category.name}}" selected>{{category.name}}</option> {% endif %}
+  	<option {% if category.name != default_category %} value="{{category.name}}">{{category.name}}</option> {% endif %} -->
   	{% endfor %}
 	</select>
 	<br>

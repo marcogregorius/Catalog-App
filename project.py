@@ -14,6 +14,7 @@ import requests
 import datetime
 import uuid
 import hashlib
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -275,6 +276,16 @@ def check_password(username, password):
     hashed_password = hashlib.sha256(user.salt.encode() + password.encode()).hexdigest()
     return hashed_password == user.hashed_password
 
+def login_required(function):
+    @wraps(function)
+    def wrapper():
+        if 'username' in login_session:
+            return function()
+        else:
+            flash('A user must be logged to add a new item.')
+            return redirect(url_for('home'))
+    return wrapper
+
 
 @app.route('/catalog.json')
 def catalogJSON():
@@ -284,10 +295,11 @@ def catalogJSON():
     categories = session.query(Category).all()
     catalog = []
     for c in categories:
-        items = session.query(Item).filter_by(category_id=c.id)
+        items = session.query(Item).filter_by(category_id=c.id).all()
         c = c.serialize
-        c['Item'] = [i.serialize for i in items]
         catalog.append(c)
+        if items:
+            c['items'] = [i.serialize for i in items]
     return jsonify(Category=catalog)
 
 
@@ -357,12 +369,11 @@ def item_description(category, item):
 
 
 @app.route('/catalog/new', methods=['GET', 'POST'])
+@login_required
 def new_item():
     """
     Create new item.
     """
-    if 'username' not in login_session:
-        return redirect('/login')
     categories = session.query(Category).order_by(Category.name).all()
     if request.method == 'POST':
         creation_time = datetime.datetime.now()
