@@ -304,7 +304,8 @@ def login_required(function):
 @app.route('/catalog.json')
 def catalogJSON():
     """
-    API Endpoint for returning JSON object
+    API Endpoint for returning JSON object on all categories and
+    items under each category.
     """
     categories = session.query(Category).all()
     catalog = []
@@ -315,6 +316,28 @@ def catalogJSON():
         if items:
             c['items'] = [i.serialize for i in items]
     return jsonify(Category=catalog)
+
+
+@app.route('/catalog/<category>.json')
+def itemsJSON(category):
+    """
+    API Endpoint for returning JSON object on all items under
+    a category.
+    """
+    cat_id = session.query(Category).filter_by(name=category).one().id
+    items = session.query(Item).filter_by(category_id=cat_id).all()
+    return jsonify(items=[i.serialize for i in items])
+
+
+@app.route('/catalog/<category>/<item>.json')
+def singleItemJSON(category, item):
+    """
+    API Endpoint for returning JSON object for a single item.
+    """
+    cat_id = session.query(Category).filter_by(name=category).one().id
+    item = session.query(Item).filter_by(category_id=cat_id,
+                                         name=item).one()
+    return jsonify(item.serialize)
 
 
 @app.route('/')
