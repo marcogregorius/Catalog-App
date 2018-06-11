@@ -1,18 +1,18 @@
-# Catalog App
+# [Catalog App](http://catalog.marcogreg.com)
 Catalog App is a web app that lists a catalog of sports categories and items in every category. The website is featured with authentication to authenticate real user and authorization to authorize the correct user when modifying the item. User has the option to login with traditionally entering username and password or via Google Sign In. The traditional sign in uses the feature of hashing (SHA256) a unique salt with the password and stores the hashed password in the database.
-The website in its simplest form displays the basic CRUD functionality.
+The website in its simplest form displays the basic CRUD functionality and provides API endpoints of the database.
 
 ## Technology Used
-- Backend: Python with Flask framework and SQL Alchemy
+- Backend: Python with Flask framework, PostgreSQL + SQL Alchemy
 - Frontend: HTML5 and CSS with Bootstrap Framework
 
-## Download
-- Fork this Github [repository](https://github.com/marcogregorius/Catalog-App)
-- Clone to your local repository by pasting below line into your command line:
-  `https://github.com/marcogregorius/Catalog-App.git`
-
 ## Usage Instruction
-### Connect to Udacity VM to run the server:
+
+### Simply visit http://catalog.marcogreg.com (Recommended)
+
+### Or, clone and run from your local machine (vagrant VM setup is required):
+- Clone this GitHub repository by pasting below line into your terminal/command line:
+  `git clone https://github.com/marcogregorius/Catalog-App.git`
 - `cd` to the `/catalog/` folder
 - Run `vagrant up`
 - Enter `vagrant ssh`
@@ -20,7 +20,7 @@ The website in its simplest form displays the basic CRUD functionality.
 - Run the server python file with `python project.py`
 
 ### Launch the website from your browser (Google Chrome is preferred):
-- Go to http://localhost:8000
+- Go to http://localhost:8000 (if you host locally)
 - Start with registering your account or logging in via Google Sign In
    - Registration page:
    ![alt text](/screenshots/register.png "Registration page")
@@ -32,4 +32,19 @@ The website in its simplest form displays the basic CRUD functionality.
 - From here, you can navigate through your added items in "My Item" on the top right corner, as well as edit and delete your own item.
 - Note that you are not authorized to edit or delete items that do not belong to you (not added by you).
 
+## API Endpoints
+The Catalog App also provides below API endpoints, formatted as below:
 
+- /catalog.json
+
+- /catalog/**category**.json
+  
+  _**Try**_ http://catalog.marcogreg.com/catalog/Soccer.json
+  
+- /catalog/**category**/**item**.json
+  
+  _**Try**_ http://catalog.marcogreg.com/catalog/Hockey/Puck.json
+
+Both `category` and `item` are case-sensitive.
+
+List of category: `Baseball, Basketball, Foosball, Frisbee, Hockey, Rock Climbing, Skating, Snowboarding, Soccer`
