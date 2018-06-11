@@ -8,9 +8,9 @@ The website in its simplest form displays the basic CRUD functionality and provi
 
 ## Usage Instruction
 
-### Simply visit http://catalog.marcogreg.com (Recommended)
+### - Simply visit http://catalog.marcogreg.com (Recommended)
 
-### Or, clone and run from your local machine (vagrant VM setup is required):
+### - Or, clone and run from your local machine (vagrant VM setup is required):
 - Clone this GitHub repository by pasting below line into your terminal/command line:
   `git clone https://github.com/marcogregorius/Catalog-App.git`
 - `cd` to the `/catalog/` folder
